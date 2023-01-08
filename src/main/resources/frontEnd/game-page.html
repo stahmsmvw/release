@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MovieFlex</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet"> 
+    <script src="script.js"></script>
+</head>
+<body>
+<header>
+    <h1>MovieFlex✨</h1>
+</header>
+<div id="wrapper">
+    <main>
+        <div class="card-holder">
+            <div class="flip-card">
+                <div class="flip-card-inner"> 
+                    <div class="flip-card-front">
+                        
+                    </div>
+                    <div class="flip-card-back" id="back1">
+                        <div class="flip-card-back-image"></div>
+                        <div class="flip-card-back-button">
+                            <button id="btn0" class="card-button" onmousedown="checkAnswer(0)">Choose!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border rounded">
+                        
+                    </div>
+                    <div class="flip-card-back" id="back2">
+                        <div class="flip-card-back-image">
+                        </div>
+                        <div class="flip-card-back-button">
+                            <button id="btn1" class="card-button" onmousedown="checkAnswer(1)">Choose!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border rounded">
+                        
+                    </div>
+                    <div class="flip-card-back" id="back3">
+                        <div class="flip-card-back-image">
+                        </div>
+                        <div class="flip-card-back-button">
+                            <button id="btn2" class="card-button" onmousedown="checkAnswer(2)">Choose!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front border rounded">
+                        
+                    </div>
+                    <div class="flip-card-back" id="back4">
+
+                        <div class="flip-card-back-image">
+
+                        </div>
+                        <div class="flip-card-back-button">
+                            <button id="btn3" class="card-button" onmousedown="checkAnswer(3)">Choose!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="web-player">
+            <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+            <div id="embed-iframe">
+                
+            </div>
+            <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async>
+            </script>
+        </div>
+        <div class="quit-button">
+            <button onclick="quitGame()" href="index1.html">
+                <a href="index.html">
+                    Quit
+                </a>
+            </button>
+        </div>
+    </main>
+</div>
+</body>
+</html>
