@@ -167,7 +167,7 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
 
 
 /**
- * Loads authorization token for the player and pushes playback for the given ID
+ * Loads authorization token for the player
  */
 
 function pushWebPlayer() {
