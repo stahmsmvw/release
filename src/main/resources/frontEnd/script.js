@@ -7,13 +7,14 @@ var counter = 0;
  */
 
 window.onload = () => {
-    newRound();
+    auth();
 }
 
 /**
  * <---------------------------------------------------- Web Stuff ---------------------------------------------------->
  *
- * Most of the prep-work for the guessing-game. Fetch is used to grab @param {} movieID for much of the use seen below. 
+ * Most of the prep-work for the guessing-game. Fetch is used to grab 
+ * @param {} movieID for much of the use seen below. 
  */
 
 function newRound() {
@@ -139,14 +140,46 @@ function getOMDBTitle(movieID) {
  * <---------------------------------------------------- Spotify Stuff --------------------------------------------------->
 */
 
+
+/**
+ * Loads the API for the Spotify Web Player
+ * @param {} IFrameAPI 
+ */
+
+
+window.onSpotifyIframeApiReady = (IFrameAPI) => {
+    let element = document.getElementById('embed-iframe');
+    let options = {
+        width: '25%',
+        height: '150',
+        uri: 'spotify:episode:7makk4oTQel546B0PZlDM5'
+      };
+    let callback = (EmbedController) => {
+      document.querySelectorAll('ul#episodes > li > button').forEach(
+        episode => {
+          episode.addEventListener('click', () => {
+            EmbedController.loadUri(episode.dataset.spotifyId)
+          });
+        })
+    };
+    IFrameAPI.createController(element, options, callback);
+  };
+
+
 /**
  * Loads authorization token for the player and pushes playback for the given ID
  */
 
 function pushWebPlayer() {
-    
+    const getSpotifyUserLogin = () => {
+        fetch("http://localhost:10123/audio/login")
+        .then((response) => response.text())
+        .window.location.replace(response);
+    }
 }
 
+
+/*
 function auth() {
 
     var client_id = 'e46654a198024b1e97a655387975bdf3';
@@ -190,28 +223,4 @@ function auth() {
     }
     });
 }
-
-/**
- * Loads the API for the Spotify Web Player
- * @param {} IFrameAPI 
- */
-
-
-window.onSpotifyIframeApiReady = (IFrameAPI) => {
-    let element = document.getElementById('embed-iframe');
-    let options = {
-        width: '25%',
-        height: '150',
-        uri: 'spotify:episode:7makk4oTQel546B0PZlDM5'
-      };
-    let callback = (EmbedController) => {
-      document.querySelectorAll('ul#episodes > li > button').forEach(
-        episode => {
-          episode.addEventListener('click', () => {
-            EmbedController.loadUri(episode.dataset.spotifyId)
-          });
-        })
-    };
-    IFrameAPI.createController(element, options, callback);
-  };
-
+*/
