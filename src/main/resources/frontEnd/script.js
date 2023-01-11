@@ -148,7 +148,12 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
         //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
     };
     let callback = (EmbedController) => {
-        
+        function changeTrack(trackUri){
+            IFrameAPI.changeTrackCallback(trackUri)
+        }
+        function togglePlay(){
+            IFrameAPI.togglePlayCallback()
+        }
     };
     IFrameAPI.createController(element, options, callback);
 }
@@ -161,6 +166,8 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
 function pushWebPlayer(movieID) {
     var title = getOMDBTitle(movieID);
     var trackUri = searchTrackByTitle(title);
+
+    changeTrack(trackUri);
 }
 
 /**
@@ -216,5 +223,9 @@ function getOMDBTitle(movieID) {
         }))
 
      */
+}
+
+function togglePlay(){
+    togglePlayCallback();
 }
 
