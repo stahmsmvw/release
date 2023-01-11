@@ -137,24 +137,27 @@ function inTransitionButton(correctAnswer, index) {
  */
 
 
+var trackUri = 'spotify:track:6EKywtYHtZLAvxyEcqrbE7';
+var togglePlay = false;
+
 window.onSpotifyIframeApiReady = (IFrameAPI) => {
     trackID = '6EKywtYHtZLAvxyEcqrbE7';
     let element = document.getElementById('embed-iframe');
     let options = {
-        width: '25%',
-        height: '150',
+        width: '0%',
+        height: '0',
         uri: 'spotify:track:' + trackID
         //https://open.spotify.com/track/4lC9s3vwDa16w2G33KfF9C?si=f2cc45ccddab43f1
         //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
     };
     let callback = (EmbedController) => {
-        function changeTrack(trackUri){
-            IFrameAPI.changeTrackCallback(trackUri)
-        }
-        function togglePlay(){
-            IFrameAPI.togglePlayCallback()
-        }
+        document.getElementById("load-song").addEventListener('click', e =>{
+            console.log("IM HERE")
+            EmbedController.loadUri(trackUri);
+            EmbedController.togglePlay();
+        })
     };
+    playerController = callback;
     IFrameAPI.createController(element, options, callback);
 }
 
@@ -164,10 +167,26 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
  */
 
 function pushWebPlayer(movieID) {
-    var title = getOMDBTitle(movieID);
-    var trackUri = searchTrackByTitle(title);
-
-    changeTrack(trackUri);
+    let key = "10f5a22c";
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
+    console.log("Endpoint OMDB");
+    console.log(endpoint);
+    fetch(endpoint)
+    .then((response) => response.json())
+    .then((data) => {
+        endpoint = "http://localhost:10123/audio/search/" + data.Title;
+        console.log("Title");
+        console.log(data);
+        console.log("Endpoint Search");
+        console.log(endpoint);
+        fetch(endpoint)
+        .then((response) => response.text())
+        .then((data) => {
+            console.log("URI FROM SEARCH");
+            console.log(data);
+            trackUri = data;
+        })
+    });
 }
 
 /**
@@ -178,13 +197,19 @@ function pushWebPlayer(movieID) {
 function searchTrackByTitle(movieTitle) {
     let endpoint = "http://localhost:10123/audio/search/" + movieTitle;
     fetch(endpoint)
-    .then((response) => response.text())
+    .then((response) => {
+        console.log("URI FROM SEARCH");
+        console.log(response);
+        trackUri = response;
+        response.text()
+    })/*
     .then((data) => {
         console.log("URI FROM SEARCH");
-        console.log(data)
-        EmbedController.loadUri(data)
+        console.log(data);
+        trackUri = data;
         return data;
     })
+    */
 }
 
 /**
@@ -226,6 +251,6 @@ function getOMDBTitle(movieID) {
 }
 
 function togglePlay(){
-    togglePlayCallback();
+    playerController.dispatchEvent(eventTogglePlay);
 }
 
