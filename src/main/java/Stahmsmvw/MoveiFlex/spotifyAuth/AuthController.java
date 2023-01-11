@@ -53,13 +53,13 @@ public class AuthController {
     @ResponseBody
     public String spotifySearch(@PathVariable String title) {
         SearchItemRequest sir = spotifyApi
-                  .searchItem(title +  " soundtrack main theme", "track")
+                  .searchItem(title + " soundtrack main theme", "track")
                   .build();
 
         try {
-            final se.michaelthelin.spotify.model_objects.special.SearchResult sr = sir.execute();
-            System.out.println(sr.toString());
-            return sr.toString();
+          final se.michaelthelin.spotify.model_objects.special.SearchResult sr = sir.execute();
+          System.out.println(sr.getTracks().getItems()[0].getUri());
+          return sr.getTracks().getItems()[0].getUri();
         } catch(IOException | SpotifyWebApiException | ParseException e){
             e.printStackTrace();
             return null;

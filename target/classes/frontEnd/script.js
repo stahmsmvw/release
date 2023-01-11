@@ -1,7 +1,7 @@
 var correctCard = null;
 var ids = [];
 var counter = 0;
-var playerController;
+var playerController = null;
 
 /**
  * @author Vincent Parik Westlund
@@ -186,113 +186,32 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
 
 
 /**
- * Loads authorization token for the player
+ * TODO NOTE
  */
-function pushWebPlayer(correctCard) {
-    let title = getOMDBTitle(correctCard);
-    let trackUri = searchTracks(title);
-    console.log(trackUri + "track uri")
-    playerController.loadUri(trackUri);
-    /*
-    IFrameAPI.addTrack()
-    let callback = (EmbedController) => {
-        document.querySelectorAll('ul#episodes > li > button').forEach(
-            episode => {
-                episode.addEventListener('click', () => {
-                    EmbedController.loadUri()
-                });
-            })
-    };*/
-    /*var spotifyURI = searchTracks(getOMDBTitle(correctCard));
-    let element = document.getElementById('embed-iframe');
-    let options = {
-        width: '25%',
-        height: '150',
-        uri: spotifyURI
-        //https://open.spotify.com/track/4lC9s3vwDa16w2G33KfF9C?si=f2cc45ccddab43f1
-        //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
-        //trackID = '6EKywtYHtZLAvxyEcqrbE7';
-    };
-    let callback = (EmbedController) => {
-        document.querySelectorAll('ul#episodes > li > button').forEach(
-            episode => {
-                episode.addEventListener('click', () => {
-                    let uriTrack = searchTracks();
-                    EmbedController.loadUri(uriTrack)
-                });
-            })
-    };
-    IFrameAPI.createController(element, options, callback);
 
-     */
+function pushWebPlayer(movieID) {
+    let title = getOMDBTitle(movieID);
+    title = title.replace(" ", "+");
+    console.log("WASHED TITLE");
+    console.log(title);
+    let trackUri = searchTrackByTitle(title);
+    console.log("TRACK URI")
+    console.log(trackUri);
+    playerController.loadUri(trackUri);
+
 }
 
-function searchTracks(movieTitle) {
+/**
+ * TODO NOTE
+ * @param {} movieTitle 
+ */
+
+function searchTrackByTitle(movieTitle) {
     let endpoint = `http://localhost:10123/audio/search/${movieTitle}`;
     $.get(endpoint, function(data, status) {
-        let value = `${data.body.tracks.item[0].uri}`;
+        let value = data;
         console.log("URI")
         console.log(value);
         return value;
     })
-    /*
-fetch('http://localhost:10123/audio/search/' + movieTitle)
-    .then(response => {
-        let value = response.body.tracks.items[0].uri;
-        console.log("SEARCH RESULT HERE");
-        console.log(value);
-        return value;
-    });
-     */
 }
-
-
-
-/*
-function auth() {
-
-    var client_id = 'e46654a198024b1e97a655387975bdf3';
-    var client_secret = '38f7b34e697340989b6dff7ff9421085';
-    var authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
-        headers: {
-            'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-        },
-        form: {
-            grant_type: 'client_credentials'
-        },
-        json: true
-    };
-
-    fetch('https://reqbin.com/echo/post/json', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({"id": 78912})
-    })
-        .then(response => response.json())
-        .then(response => console.log(JSON.stringify(response)))
-
-    request.post(authOptions, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-
-            // use the access token to access the Spotify Web API
-            var token = body.access_token;
-            var options = {
-                url: 'https://api.spotify.com/v1/users/jmperezperez',
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                },
-                json: true
-            };
-            request.get(options, function (error, response, body) {
-                console.log(body);
-            });
-        }
-    });
-
-     
-}
-*/
