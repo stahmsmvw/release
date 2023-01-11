@@ -32,7 +32,7 @@ public class MovieIDService implements Serializable {
           Set<MovieID> set = new HashSet<>();
 
           for (int i = 0; set.size() < 4; i++) {
-               set.add(movieIDRepository.getReferenceById(random.nextLong(99)));
+               set.add(movieIDRepository.getReferenceById(random.nextLong(1,99)));
                System.out.println("Added " + random);
           }
           return set;
