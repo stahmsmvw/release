@@ -8,7 +8,7 @@ var playerController = null;
  */
 
 window.onload = () => {
-    //location.replace('localhost://3001/login')
+    fetch('localhost://10123/audio/login');
     newRound();
     //auth();
 }
@@ -152,7 +152,7 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
     };
     let callback = (EmbedController) => {
         document.getElementById("load-song").addEventListener('click', e =>{
-            console.log("IM HERE")
+            console.log("IM IN THE CALLBACK HEHE")
             EmbedController.loadUri(trackUri);
             EmbedController.togglePlay();
         })
@@ -177,7 +177,7 @@ function pushWebPlayer(movieID) {
         endpoint = "http://localhost:10123/audio/search/" + data.Title;
         console.log("Title");
         console.log(data);
-        console.log("Endpoint Search");
+        console.log("Endpoint Spotify Search");
         console.log(endpoint);
         fetch(endpoint)
         .then((response) => response.text())
@@ -187,70 +187,5 @@ function pushWebPlayer(movieID) {
             trackUri = data;
         })
     });
-}
-
-/**
- * TODO NOTE
- * @param {} movieTitle 
- */
-
-function searchTrackByTitle(movieTitle) {
-    let endpoint = "http://localhost:10123/audio/search/" + movieTitle;
-    fetch(endpoint)
-    .then((response) => {
-        console.log("URI FROM SEARCH");
-        console.log(response);
-        trackUri = response;
-        response.text()
-    })/*
-    .then((data) => {
-        console.log("URI FROM SEARCH");
-        console.log(data);
-        trackUri = data;
-        return data;
-    })
-    */
-}
-
-/**
- * Fetches a title from the OMDB API for further use below
- * @param {} movieID ID for the movies title.
- */
-
-function getOMDBTitle(movieID) {
-    let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    fetch(endpoint)
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("TITLE FROM DATABASE")
-        console.log(data.Title);
-       return data.Title;
-    });
-    /*
-    let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    $.get(endpoint, function(data, status) {
-        let value = `${data.Title}`;
-        console.log("TITLE HERE.")
-        console.log(value);
-        return value;
-    })
-    */
-    /*
-    let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    fetch(endpoint).
-    then((response) => response.json()
-        .then((data) => {
-            let value = `${data.Title}`;
-            return value;
-        }))
-
-     */
-}
-
-function togglePlay(){
-    playerController.dispatchEvent(eventTogglePlay);
 }
 
