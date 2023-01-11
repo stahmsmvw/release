@@ -1,7 +1,7 @@
 var correctCard = null;
 var ids = [];
 var counter = 0;
-var playerFrame;
+var playerController;
 
 /**
  * @author Vincent Parik Westlund
@@ -29,9 +29,9 @@ function newRound() {
                 gameIDs.push(obj.movieID);
             }
             ids = gameIDs;
-            let answer = assignCorrectAnswer(ids);
+            let correctAnswer = assignCorrectAnswer(ids);
             pushPosters(ids);
-            pushWebPlayer(answer)
+            pushWebPlayer(correctAnswer);
         });
 }
 
@@ -133,10 +133,23 @@ function inTransitionButton(correctAnswer, index) {
 function getOMDBTitle(movieID) {
     let key = "10f5a22c";
     let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    $.get(endpoint, function (data, status) {
+    $.get(endpoint, function(data, status) {
         let value = `${data.Title}`;
+        console.log("TITLE HERE.")
+        console.log(value);
         return value;
-    });
+    })
+    /*
+    let key = "10f5a22c";
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
+    fetch(endpoint).
+    then((response) => response.json()
+        .then((data) => {
+            let value = `${data.Title}`;
+            return value;
+        }))
+
+     */
 }
 
 /**
@@ -151,15 +164,14 @@ function getOMDBTitle(movieID) {
 
 
 window.onSpotifyIframeApiReady = (IFrameAPI) => {
-    console.log(true);
-    playerFrame = document.getElementById('embed-iframe');
+    trackID = '6EKywtYHtZLAvxyEcqrbE7';
+    let element = document.getElementById('embed-iframe');
     let options = {
         width: '25%',
         height: '150',
         uri: 'spotify:track:' + trackID
         //https://open.spotify.com/track/4lC9s3vwDa16w2G33KfF9C?si=f2cc45ccddab43f1
         //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
-        //trackID = '6EKywtYHtZLAvxyEcqrbE7';
     };
     let callback = (EmbedController) => {
         document.querySelectorAll('ul#episodes > li > button').forEach(
@@ -169,17 +181,29 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
                 });
             })
     };
-    IFrameAPI.createController(element, options, callback);
-
+    playerController = IFrameAPI.createController(element, options, callback);
 }
 
 
 /**
  * Loads authorization token for the player
  */
-/*
-function pushWebPlayer(IFrameAPI) {
-    var spotifyURI = searchTracks(getOMDBTitle(correctCard));
+function pushWebPlayer(correctCard) {
+    let title = getOMDBTitle(correctCard);
+    let trackUri = searchTracks(title);
+    console.log(trackUri + "track uri")
+    playerController.loadUri(trackUri);
+    /*
+    IFrameAPI.addTrack()
+    let callback = (EmbedController) => {
+        document.querySelectorAll('ul#episodes > li > button').forEach(
+            episode => {
+                episode.addEventListener('click', () => {
+                    EmbedController.loadUri()
+                });
+            })
+    };*/
+    /*var spotifyURI = searchTracks(getOMDBTitle(correctCard));
     let element = document.getElementById('embed-iframe');
     let options = {
         width: '25%',
@@ -199,14 +223,27 @@ function pushWebPlayer(IFrameAPI) {
             })
     };
     IFrameAPI.createController(element, options, callback);
+
+     */
 }
-*/
 
 function searchTracks(movieTitle) {
+    let endpoint = `http://localhost:10123/audio/search/${movieTitle}`;
+    $.get(endpoint, function(data, status) {
+        let value = `${data.body.tracks.item[0].uri}`;
+        console.log("URI")
+        console.log(value);
+        return value;
+    })
+    /*
 fetch('http://localhost:10123/audio/search/' + movieTitle)
-    .then((response) => {
-        return response;
+    .then(response => {
+        let value = response.body.tracks.items[0].uri;
+        console.log("SEARCH RESULT HERE");
+        console.log(value);
+        return value;
     });
+     */
 }
 
 
