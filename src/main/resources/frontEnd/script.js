@@ -125,32 +125,6 @@ function inTransitionButton(correctAnswer, index) {
     }
 }
 
-/**
- * Fetches a title from the OMDB API for further use below
- * @param {} movieID ID for the movies title.
- */
-
-function getOMDBTitle(movieID) {
-    let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    $.get(endpoint, function(data, status) {
-        let value = `${data.Title}`;
-        console.log("TITLE HERE.")
-        console.log(value);
-        return value;
-    })
-    /*
-    let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
-    fetch(endpoint).
-    then((response) => response.json()
-        .then((data) => {
-            let value = `${data.Title}`;
-            return value;
-        }))
-
-     */
-}
 
 /**
  * <---------------------------------------------------- Spotify Stuff --------------------------------------------------->
@@ -174,14 +148,9 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
         //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
     };
     let callback = (EmbedController) => {
-        document.querySelectorAll('ul#episodes > li > button').forEach(
-            episode => {
-                episode.addEventListener('click', () => {
-                    EmbedController.loadUri(episode.dataset.spotifyId)
-                });
-            })
+        
     };
-    playerController = IFrameAPI.createController(element, options, callback);
+    IFrameAPI.createController(element, options, callback);
 }
 
 
@@ -190,15 +159,8 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
  */
 
 function pushWebPlayer(movieID) {
-    let title = getOMDBTitle(movieID);
-    title = title.replace(" ", "+");
-    console.log("WASHED TITLE");
-    console.log(title);
-    let trackUri = searchTrackByTitle(title);
-    console.log("TRACK URI")
-    console.log(trackUri);
-    playerController.loadUri(trackUri);
-
+    var title = getOMDBTitle(movieID);
+    var trackUri = searchTrackByTitle(title);
 }
 
 /**
@@ -207,11 +169,52 @@ function pushWebPlayer(movieID) {
  */
 
 function searchTrackByTitle(movieTitle) {
-    let endpoint = `http://localhost:10123/audio/search/${movieTitle}`;
+    let endpoint = "http://localhost:10123/audio/search/" + movieTitle;
+    fetch(endpoint)
+    .then((response) => response.text())
+    .then((data) => {
+        console.log("URI FROM SEARCH");
+        console.log(data)
+        EmbedController.loadUri(data)
+        return data;
+    })
+}
+
+/**
+ * Fetches a title from the OMDB API for further use below
+ * @param {} movieID ID for the movies title.
+ */
+
+function getOMDBTitle(movieID) {
+    let key = "10f5a22c";
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
+    fetch(endpoint)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log("TITLE FROM DATABASE")
+        console.log(data.Title);
+       return data.Title;
+    });
+    /*
+    let key = "10f5a22c";
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
     $.get(endpoint, function(data, status) {
-        let value = data;
-        console.log("URI")
+        let value = `${data.Title}`;
+        console.log("TITLE HERE.")
         console.log(value);
         return value;
     })
+    */
+    /*
+    let key = "10f5a22c";
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
+    fetch(endpoint).
+    then((response) => response.json()
+        .then((data) => {
+            let value = `${data.Title}`;
+            return value;
+        }))
+
+     */
 }
+
