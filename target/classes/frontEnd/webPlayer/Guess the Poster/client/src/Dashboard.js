@@ -18,6 +18,7 @@ export default function Dashboard({ code }) {
   const counter = 0
   const [gameIds, setGameIds] = useState([])
 
+  /*
   useEffect(()=>{
     fetch("http://localhost:10123/api/movieid/game-instance")
     .then(res => 
@@ -31,7 +32,7 @@ export default function Dashboard({ code }) {
       }
 
   },[counter])
-
+*/
 
   useEffect(() => {
     if (!accessToken) return
@@ -127,7 +128,8 @@ export default function Dashboard({ code }) {
             </div>
         </div>
         <div class="web-player">
-          <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+          //<Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+
         </div>
         <div class="quit-button">
             <button onclick="quitGame()" href="index1.html">

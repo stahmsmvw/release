@@ -10,11 +10,21 @@ export default function Login() {
       className="d-flex justify-content-center align-items-center"
       style={{ minHeight: "100vh" }}
     >
-      <h1>Welcome to Guess The Poster</h1>
-      <p>You will need to login to Spotify in order to be able to use our mashup service</p>
-      <a className="btn btn-success btn-lg" href={AUTH_URL}>
-        Login with Spotify
-      </a>
+      <div id="wrapper">
+            <h1>MovieFlex✨</h1>
+            <div class="container">
+                <ul class="myUL">
+                    <li>Listen to the song</li>
+                    <li>Match the song with movie poster</li>
+                    <li>Click on the poster you have chosen for the song</li>
+                </ul>
+            </div>
+            <div class="button">
+              <a className="btn btn-success btn-lg" href={AUTH_URL}>
+              Login with Spotify
+            </a>
+        </div>
+    </div>
     </Container>
   )
 }
