@@ -31,12 +31,6 @@ public class AuthController {
      private static final ClientCredentialsRequest clientCredentialsRequest =
                spotifyApi.clientCredentials().build();
 
-     @GetMapping("/login")
-     @ResponseBody
-     public void spotifyLogin() {
-          clientCredentials_Sync();
-     }
-
      public static void clientCredentials_Sync() {
           try {
                final ClientCredentials clientCredentials = clientCredentialsRequest.execute();
@@ -52,6 +46,9 @@ public class AuthController {
     @GetMapping("/search/{title}")
     @ResponseBody
     public String spotifySearch(@PathVariable String title) {
+          if(spotifyApi.getAccessToken() == null){
+               clientCredentials_Sync();
+          }
         SearchItemRequest sir = spotifyApi
                   .searchItem(title + " soundtrack main theme", "track")
                   .build();
