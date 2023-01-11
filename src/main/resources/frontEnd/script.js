@@ -1,6 +1,7 @@
 var correctCard = null;
 var ids = [];
 var counter = 0;
+var playerFrame;
 
 /**
  * @author Vincent Parik Westlund
@@ -151,9 +152,7 @@ function getOMDBTitle(movieID) {
 
 window.onSpotifyIframeApiReady = (IFrameAPI) => {
     console.log(true);
-
-    /*
-    let element = document.getElementById('embed-iframe');
+    playerFrame = document.getElementById('embed-iframe');
     let options = {
         width: '25%',
         height: '150',
@@ -172,14 +171,13 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
     };
     IFrameAPI.createController(element, options, callback);
 
-     */
 }
 
 
 /**
  * Loads authorization token for the player
  */
-
+/*
 function pushWebPlayer(IFrameAPI) {
     var spotifyURI = searchTracks(getOMDBTitle(correctCard));
     let element = document.getElementById('embed-iframe');
@@ -195,65 +193,69 @@ function pushWebPlayer(IFrameAPI) {
         document.querySelectorAll('ul#episodes > li > button').forEach(
             episode => {
                 episode.addEventListener('click', () => {
-                    EmbedController.loadUri(episode.dataset.spotifyId)
+                    let uriTrack = searchTracks();
+                    EmbedController.loadUri(uriTrack)
                 });
             })
     };
     IFrameAPI.createController(element, options, callback);
 }
-
+*/
 
 function searchTracks(movieTitle) {
-    fetch('http://localhost:10123/audio/search/' + movieTitle)
-        .then((response) => {
-            return response.body.tracks.items[0].uri;
-        });
-
-
-    /*
-    function auth() {
-
-        var client_id = 'e46654a198024b1e97a655387975bdf3';
-        var client_secret = '38f7b34e697340989b6dff7ff9421085';
-        var authOptions = {
-            url: 'https://accounts.spotify.com/api/token',
-            headers: {
-                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-            },
-            form: {
-                grant_type: 'client_credentials'
-            },
-            json: true
-        };
-
-        fetch('https://reqbin.com/echo/post/json', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"id": 78912})
-        })
-            .then(response => response.json())
-            .then(response => console.log(JSON.stringify(response)))
-
-        request.post(authOptions, function (error, response, body) {
-            if (!error && response.statusCode === 200) {
-
-                // use the access token to access the Spotify Web API
-                var token = body.access_token;
-                var options = {
-                    url: 'https://api.spotify.com/v1/users/jmperezperez',
-                    headers: {
-                        'Authorization': 'Bearer ' + token
-                    },
-                    json: true
-                };
-                request.get(options, function (error, response, body) {
-                    console.log(body);
-                });
-            }
-        });
-
-     */
+fetch('http://localhost:10123/audio/search/' + movieTitle)
+    .then((response) => {
+        return response;
+    });
 }
+
+
+
+/*
+function auth() {
+
+    var client_id = 'e46654a198024b1e97a655387975bdf3';
+    var client_secret = '38f7b34e697340989b6dff7ff9421085';
+    var authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+        },
+        form: {
+            grant_type: 'client_credentials'
+        },
+        json: true
+    };
+
+    fetch('https://reqbin.com/echo/post/json', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({"id": 78912})
+    })
+        .then(response => response.json())
+        .then(response => console.log(JSON.stringify(response)))
+
+    request.post(authOptions, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+
+            // use the access token to access the Spotify Web API
+            var token = body.access_token;
+            var options = {
+                url: 'https://api.spotify.com/v1/users/jmperezperez',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                json: true
+            };
+            request.get(options, function (error, response, body) {
+                console.log(body);
+            });
+        }
+    });
+
+     
+}
+*/
