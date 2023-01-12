@@ -71,7 +71,7 @@ public class AuthController {
                clientCredentials_Sync();
           }
         SearchItemRequest sir = spotifyApi
-                  .searchItem(title + " soundtrack main theme", "track")
+                  .searchItem(title + " soundtrack main theme movie", "track")
                   .build();
 
           try {
