@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 /**
  * @author Anthon Haväng
+ * This class serves as an interface to the database and maps attributes from
+ * the "movieids"-table in the database to Java interpretable data.
  */
 @Entity
 @Table(name = "movieids")

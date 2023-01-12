@@ -6,11 +6,20 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * @author Anthon Haväng
+ * Service class. Defines the logic of the methods used in the controller class that are  in turn
+ * called by externals.
+ */
 @Service
 @Transactional
 public class MovieIDService implements Serializable {
      private final MovieIDRepository movieIDRepository;
 
+     /**
+      * Constructor. Allows usage of the methods defined in the repository interface.
+      * @param movieIDRepository
+      */
      @Autowired
      public MovieIDService(MovieIDRepository movieIDRepository){
           this.movieIDRepository = movieIDRepository;
@@ -18,6 +27,7 @@ public class MovieIDService implements Serializable {
 
      /**
       * @author Anthon Haväng
+      * @return all IMDB-titles in the database using the JPA interface from the repository interface.
       */
      public List<MovieID> getAll(){
           return movieIDRepository.findAll();
