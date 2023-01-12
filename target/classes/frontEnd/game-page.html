@@ -78,17 +78,17 @@
     </main>
         <div id="embed-iframe"></div>
             <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
-        
-        <div id="round-management">
-            <button id = "toggle-play">Start Playing</button>
-            <Form>
-                <h4>Correct answer:</h4>
-                <label id= "correct-answer"></label>
-            </Form>
+        <div class="controls" id="round-management">
+            <button class="play-pause-button" id="toggle-play">
+                Toggle Sound
+            </button>
         </div>
-            
+        <Form>
+            <h4>Correct answer:</h4>
+            <label id= "correct-answer"></label>
+        </Form>
         <div class="quit-button">
-            <button onclick="quitGame()" href="index1.html">
+            <button onclick="quitGame()" href="index.html">
                 <a href="index.html">
                     Quit
                 </a>
