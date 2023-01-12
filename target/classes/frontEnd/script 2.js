@@ -7,6 +7,7 @@ var counter = 0;
  */
 
 window.onload = () => {
+    fetch('localhost://10123/audio/login');
     newRound();
 }
 
@@ -74,12 +75,13 @@ function checkAnswer(index) {
     let answer = ids[index];
     let validity = isCorrect(answer);
     if(validity){
-        document.getElementById("correct-answer").innerText = "You're right! It is " + correctMovieTitle;
-    } else{
         document.getElementById("correct-answer").innerText = "The correct answer was " + correctMovieTitle;
+    } else{
+        document.getElementById("correct-answer").innerText = "You're right! It is " + correctMovieTitle;
     }
     inTransitionButton(validity, index);
     resetElements();
+    newRound();
 }
 
 function resetElements() {
@@ -174,42 +176,9 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
             var btnId= event.target.id
             btnId = btnId.toString();
             btnId = btnId.charAt(3)
-            
             checkAnswer(btnId);
-            fetch('http://localhost:10123/api/movieid/game-instance')
-            .then((response) => response.json())
-            .then((data) => {
-                let gameIDs = [];
-                for (const obj of data) {
-                    gameIDs.push(obj.movieID);
-                }
-                ids = gameIDs;
-                let moveID = assignCorrectAnswer(ids);
-                pushPosters(ids);
-                let key = "10f5a22c";
-                let endpoint = `http://omdbapi.com/?apikey=${key}&i=${moveID}`;
-                console.log("Endpoint OMDB");
-                console.log(endpoint);
-                fetch(endpoint)
-                .then((response) => response.json())
-                .then((data) => {
-                    endpoint = "http://localhost:10123/audio/search/" + data.Title;
-                    console.log("Title");
-                    console.log(data.Title);
-                    correctMovieTitle = data.Title;
-                    console.log("Endpoint Spotify Search");
-                    console.log(endpoint);
-                    fetch(endpoint)
-                    .then((response) => response.text())
-                    .then((data) => {
-                        console.log("URI FROM SEARCH");
-                        console.log(data);
-                        trackUri = data;
-                        EmbedController.loadUri(trackUri);
-                        EmbedController.togglePlay();
-                    })
-                });
-            });
+            EmbedController.loadUri(trackUri);
+            EmbedController.togglePlay();
           })
     };
     IFrameAPI.createController(element, options, callback);
@@ -222,7 +191,7 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
 
 function pushWebPlayer(movieID) {
     let key = "10f5a22c";
-    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`; 
+    let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`;
     console.log("Endpoint OMDB");
     console.log(endpoint);
     fetch(endpoint)
@@ -240,7 +209,6 @@ function pushWebPlayer(movieID) {
             console.log("URI FROM SEARCH");
             console.log(data);
             trackUri = data;
-            return data;
         })
     });
 }
