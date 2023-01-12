@@ -1,7 +1,6 @@
 var correctCard = null;
 var ids = [];
 var counter = 0;
-var playerController = null;
 
 /**
  * @author Vincent Parik Westlund
@@ -10,7 +9,6 @@ var playerController = null;
 window.onload = () => {
     fetch('localhost://10123/audio/login');
     newRound();
-    //auth();
 }
 
 /**
@@ -76,6 +74,11 @@ function pushPosters(movieIDs) {
 function checkAnswer(index) {
     let answer = ids[index];
     let validity = isCorrect(answer);
+    if(validity){
+        document.getElementById("correct-answer").innerText = "The correct answer was " + correctMovieTitle;
+    } else{
+        document.getElementById("correct-answer").innerText = "You're right! It is " + correctMovieTitle;
+    }
     inTransitionButton(validity, index);
     resetElements();
     newRound();
@@ -138,7 +141,7 @@ function inTransitionButton(correctAnswer, index) {
 
 
 var trackUri = 'spotify:track:6EKywtYHtZLAvxyEcqrbE7';
-var togglePlay = false;
+var correctMovieTitle = '';
 
 window.onSpotifyIframeApiReady = (IFrameAPI) => {
     trackID = '6EKywtYHtZLAvxyEcqrbE7';
@@ -151,13 +154,33 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
         //https://open.spotify.com/episode/4wsepsStgBMUlpbT16tRZm?si=lR9_JaboQjqBG_Z1O6zC3w
     };
     let callback = (EmbedController) => {
-        document.getElementById("load-song").addEventListener('click', e =>{
-            console.log("IM IN THE CALLBACK HEHE")
-            EmbedController.loadUri(trackUri);
+        document.getElementById("toggle-play").addEventListener('click', e =>{
+            console.log("Callback: toggle play")
             EmbedController.togglePlay();
         })
+
+        document.getElementById("toggle-play").addEventListener('click', e=>{
+            console.log("Event: game started")
+            document.getElementById("toggle-play").innerText = "Toggle Play";
+            EmbedController.loadUri(trackUri);
+            EmbedController.togglePlay();
+        }, {once : true})
+
+        var cardButtons = document.getElementById("flip-card-wrapper")
+        cardButtons.addEventListener('click', (event) => {
+            const isButton = event.target.nodeName === 'BUTTON';
+            if (!isButton) {
+              return;
+            }
+            console.log("Callback: new round")
+            var btnId= event.target.id
+            btnId = btnId.toString();
+            btnId = btnId.charAt(3)
+            checkAnswer(btnId);
+            EmbedController.loadUri(trackUri);
+            EmbedController.togglePlay();
+          })
     };
-    playerController = callback;
     IFrameAPI.createController(element, options, callback);
 }
 
@@ -176,7 +199,8 @@ function pushWebPlayer(movieID) {
     .then((data) => {
         endpoint = "http://localhost:10123/audio/search/" + data.Title;
         console.log("Title");
-        console.log(data);
+        console.log(data.Title);
+        correctMovieTitle = data.Title;
         console.log("Endpoint Spotify Search");
         console.log(endpoint);
         fetch(endpoint)

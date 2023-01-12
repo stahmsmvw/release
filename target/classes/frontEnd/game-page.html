@@ -16,70 +16,75 @@
 </header>
 <div id="wrapper">
     <main>
-        <div class="card-holder">
+        <div id = "flip-card-wrapper" class="card-holder">
             <div class="flip-card">
                 <div class="flip-card-inner"> 
-                    <div class="flip-card-front">
-                        
+                    <div class="flip-card-front">  
+
                     </div>
                     <div class="flip-card-back" id="back1">
                         <div class="flip-card-back-image"></div>
                         <div class="flip-card-back-button">
-                            <button id="btn0" class="card-button" onmousedown="checkAnswer(0)">Choose!</button>
+                            <button id="btn0" class="card-button">Choose!</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front border rounded">
-                        
-                    </div>
-                    <div class="flip-card-back" id="back2">
-                        <div class="flip-card-back-image">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front border rounded">
+                            
                         </div>
-                        <div class="flip-card-back-button">
-                            <button id="btn1" class="card-button" onmousedown="checkAnswer(1)">Choose!</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front border rounded">
-                        
-                    </div>
-                    <div class="flip-card-back" id="back3">
-                        <div class="flip-card-back-image">
-                        </div>
-                        <div class="flip-card-back-button">
-                            <button id="btn2" class="card-button" onmousedown="checkAnswer(2)">Choose!</button>
+                        <div class="flip-card-back" id="back2">
+                            <div class="flip-card-back-image">
+                            </div>
+                            <div class="flip-card-back-button">
+                                <button id="btn1" class="card-button">Choose!</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flip-card">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front border rounded">
-                        
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front border rounded">
+                            
+                        </div>
+                        <div class="flip-card-back" id="back3">
+                            <div class="flip-card-back-image">
+                            </div>
+                            <div class="flip-card-back-button">
+                                <button id="btn2" class="card-button">Choose!</button>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front border rounded">
+                            
+                        </div>
                     <div class="flip-card-back" id="back4">
 
                         <div class="flip-card-back-image">
 
                         </div>
                         <div class="flip-card-back-button">
-                            <button id="btn3" class="card-button" onmousedown="checkAnswer(3)">Choose!</button>
+                            <button id="btn3" class="card-button">Choose!</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </main>
         <div id="embed-iframe"></div>
-            <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" id="hadi" async></script>
+            <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
         
-        <div>
-            <button id = "load-song" class="load-song">Play Song</button>
+        <div id="round-management">
+            <button id = "toggle-play">Start Playing</button>
+            <Form>
+                <h4>Correct answer:</h4>
+                <label id= "correct-answer"></label>
+            </Form>
         </div>
             
         <div class="quit-button">
