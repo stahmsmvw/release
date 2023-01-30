@@ -70,10 +70,9 @@ public class AuthController {
           if (spotifyApi.getAccessToken() == null) {
                clientCredentials_Sync();
           }
-
-          SearchItemRequest sir = spotifyApi
-                    .searchItem(title + " soundtrack main theme", "track")
-                    .build();
+        SearchItemRequest sir = spotifyApi
+                  .searchItem(title + " soundtrack main theme movie", "track")
+                  .build();
 
           try {
                final SearchResult sr = sir.execute();
@@ -84,3 +83,60 @@ public class AuthController {
           }
      }
 }
+
+
+//om skrivning av anrop
+/**
+ * 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import java.io.IOException;
+import org.json.JSONObject;
+
+public class SpotifyAuth {
+    private static final String clientId = "YOUR_CLIENT_ID";
+    private static final String clientSecret = "YOUR_CLIENT_SECRET";
+    private static String accessToken;
+
+
+     public static void clientCredentials_Sync() {
+          OkHttpClient client = new OkHttpClient();
+
+          Request request = new Request.Builder()
+                    .url("https://accounts.spotify.com/api/token")
+                    .post(RequestBody.create(MediaType.get("application/x-www-form-urlencoded"), "grant_type=client_credentials"))
+                    .addHeader("Authorization", "Basic " + Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes()))
+                    .build();
+
+          try (Response response = client.newCall(request).execute()) {
+               String body = response.body().string();
+               JSONObject json = new JSONObject(body);
+               accessToken = json.getString("access_token");
+          }
+     }
+
+
+     @GetMapping("/search/{title}")
+     @ResponseBody
+     public String spotifySearch(@PathVariable String title) {
+          if (spotifyApi.getAccessToken() == null) {
+               clientCredentials_Sync();
+          }
+          track_name = title + " soundtrack main theme movie";
+          Request request = new Request.Builder()
+          .url("https://api.spotify.com/v1/search?q=track_name&type=track")
+          .get()
+          .addHeader("Authorization", "Bearer " + accessToken)
+          .build();
+
+          try {
+               final SearchResult sr = result.execute();
+               return sr.getTracks().getItems()[0].getUri();
+          } catch (IOException | SpotifyWebApiException | ParseException e) {
+               e.printStackTrace();
+               return null;
+          }
+
+     }
+ */

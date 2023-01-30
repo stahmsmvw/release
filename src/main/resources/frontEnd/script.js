@@ -27,6 +27,7 @@ function newRound() {
             }
             ids = gameIDs;
             let correctAnswer = assignCorrectAnswer(ids);
+            correctCard = correctAnswer;
             pushPosters(ids);
             pushWebPlayer(correctAnswer);
         });
@@ -75,7 +76,7 @@ function checkAnswer(index) {
     let validity = isCorrect(answer);
     if(validity){
         document.getElementById("correct-answer").innerText = "You're right! It is " + correctMovieTitle;
-    } else{
+    } else {
         document.getElementById("correct-answer").innerText = "The correct answer was " + correctMovieTitle;
     }
     inTransitionButton(validity, index);
@@ -116,7 +117,7 @@ function inTransitionButton(correctAnswer, index) {
     let button = document.getElementById(foo);
     button.addEventListener("transitionend", function () {
         button.style.backgroundColor = "rgba(0, 0, 0, 0)";
-        button.style.transition = "background-color 0.2s ease-in-out"; // remove the transition property
+        button.style.transition = "background-color 0.2s ease-in-out";
     });
     button.style.transition = "background-color 0.2s ease-in-out";
     if (correctAnswer) {
@@ -125,6 +126,21 @@ function inTransitionButton(correctAnswer, index) {
         button.style.backgroundColor = "rgba(255, 23, 23, 0.8)";
     }
 }
+
+$(document).ready(function() {
+    var state = "paused";
+    $('#pause').on('click', function() {
+      if(state == 'paused') {
+        state = "playing";
+        $("#circle").attr("class", "play");
+        $("#from_pause_to_play")[0].beginElement();
+      } else {
+        state = "paused";
+        $("#circle").attr("class", "");
+        $("#from_play_to_pause")[0].beginElement();
+      }
+    });
+  });
 
 
 /**
@@ -153,13 +169,13 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
     };
     let callback = (EmbedController) => {
         document.getElementById("toggle-play").addEventListener('click', e =>{
-            console.log("Callback: toggle play")
+            //console.log("Callback: toggle play")
             EmbedController.togglePlay();
         })
 
-        document.getElementById("toggle-play").addEventListener('click', e=>{
+        document.getElementById("toggle-play").addEventListener('click', e=> {
             console.log("Event: game started")
-            document.getElementById("toggle-play").innerText = "Toggle Play";
+            document.getElementById("toggle-play").innerText = "Toggle Play"; //                        THIS IS THE LINE
             EmbedController.loadUri(trackUri);
             EmbedController.togglePlay();
         }, {once : true})
@@ -170,7 +186,7 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
             if (!isButton) {
               return;
             }
-            console.log("Callback: new round")
+            //console.log("Callback: new round")
             var btnId= event.target.id
             btnId = btnId.toString();
             btnId = btnId.charAt(3)
@@ -188,22 +204,22 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
                 pushPosters(ids);
                 let key = "10f5a22c";
                 let endpoint = `http://omdbapi.com/?apikey=${key}&i=${moveID}`;
-                console.log("Endpoint OMDB");
-                console.log(endpoint);
+                //console.log("Endpoint OMDB");
+                //console.log(endpoint);
                 fetch(endpoint)
                 .then((response) => response.json())
                 .then((data) => {
                     endpoint = "http://localhost:10123/audio/search/" + data.Title;
-                    console.log("Title");
-                    console.log(data.Title);
+                    //console.log("Title");
+                    //console.log(data.Title);
                     correctMovieTitle = data.Title;
-                    console.log("Endpoint Spotify Search");
-                    console.log(endpoint);
+                    //console.log("Endpoint Spotify Search");
+                    //console.log(endpoint);
                     fetch(endpoint)
                     .then((response) => response.text())
                     .then((data) => {
-                        console.log("URI FROM SEARCH");
-                        console.log(data);
+                        //console.log("URI FROM SEARCH");
+                        //console.log(data);
                         trackUri = data;
                         EmbedController.loadUri(trackUri);
                         EmbedController.togglePlay();
@@ -215,30 +231,35 @@ window.onSpotifyIframeApiReady = (IFrameAPI) => {
     IFrameAPI.createController(element, options, callback);
 }
 
+function switchIcons() {
+    let foo = document.getElementById("play-icon");
+    if(foo.data === "play.svg") {
+        foo.data = "pause.svg";
+    } else {
+        foo.data = "play.svg";
+    }
+}
+
 
 /**
- * TODO NOTE
+ * Does stuff for the web-player. Don't ask.
  */
 
 function pushWebPlayer(movieID) {
     let key = "10f5a22c";
     let endpoint = `http://omdbapi.com/?apikey=${key}&i=${movieID}`; 
-    console.log("Endpoint OMDB");
-    console.log(endpoint);
+    //console.log("Endpoint OMDB");
+    //console.log(endpoint);
     fetch(endpoint)
     .then((response) => response.json())
     .then((data) => {
         endpoint = "http://localhost:10123/audio/search/" + data.Title;
-        console.log("Title");
-        console.log(data.Title);
         correctMovieTitle = data.Title;
-        console.log("Endpoint Spotify Search");
-        console.log(endpoint);
         fetch(endpoint)
         .then((response) => response.text())
         .then((data) => {
-            console.log("URI FROM SEARCH");
-            console.log(data);
+            //console.log("URI FROM SEARCH");
+            //console.log(data);
             trackUri = data;
             return data;
         })
